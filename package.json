@@ -1,0 +1,40 @@
+{
+  "name": "shouxie",
+  "version": "1.0.0",
+  "description": "手写会议记录生成器",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"cross-env NODE_ENV=development npm run dev:vite\" \"cross-env NODE_ENV=development npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "tsc -p electron/tsconfig.json && electron .",
+    "build": "npm run build:vite && npm run build:electron",
+    "build:vite": "vite build",
+    "build:electron": "tsc -p electron/tsconfig.json",
+    "build:win": "npm run build && electron-builder --win",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@babel/code-frame": "^7.29.0",
+    "@types/node": "^24.5.7",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^35.1.5",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "wait-on": "^8.0.1"
+  }
+}

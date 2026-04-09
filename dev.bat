@@ -1,0 +1,3 @@
+@echo off
+echo Starting Handwritten Meeting Record Generator...
+npm run dev:vite

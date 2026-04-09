@@ -1,0 +1,145 @@
+.font-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.font-selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.font-selector-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.favorites-filter-btn {
+  padding: 4px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.favorites-filter-btn:hover {
+  background: #e0e0e0;
+  border-color: #bbb;
+}
+
+.favorites-filter-btn.active {
+  background: #52c41a;
+  border-color: #52c41a;
+  color: #fff;
+}
+
+.font-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.font-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.font-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.font-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.font-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.font-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #f0f0f0;
+  gap: 8px;
+}
+
+.font-item:last-child {
+  border-bottom: none;
+}
+
+.font-item:hover {
+  background: #f5f5f5;
+}
+
+.font-item.selected {
+  background: #e8f4ff;
+  border-left: 3px solid #667eea;
+}
+
+.favorite-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+}
+
+.favorite-btn .star-icon {
+  font-size: 18px;
+  color: #ccc;
+}
+
+.favorite-btn.favorited .star-icon {
+  color: #faad14;
+}
+
+.font-name {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-indicator {
+  flex-shrink: 0;
+  color: #667eea;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.font-preview {
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
