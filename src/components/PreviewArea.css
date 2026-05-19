@@ -8,7 +8,39 @@
 .a4-page {
   width: 210mm;
   height: 297mm;
-  background: #fffcf5;
+  background-color: #fffcf5;
+  background-image:
+    /* 更明显的噪点纹理 */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.035) 3px,
+      rgba(0, 0, 0, 0.035) 4px
+    ),
+    /* 随机斑点 */
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(139, 90, 43, 0.05) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(139, 90, 43, 0.04) 0%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      rgba(139, 90, 43, 0.03) 0%,
+      transparent 15%
+    );
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   position: relative;
   overflow: hidden;

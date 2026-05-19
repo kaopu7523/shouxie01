@@ -2,7 +2,12 @@ import React, { forwardRef, useEffect, useState, useImperativeHandle, useRef } f
 import './PreviewArea.css'
 
 export interface PageContent {
-  lines: string[]
+  lines: Array<{
+    text: string
+    lineHeightOffset: number // 行间距随机偏移
+    letterSpacing: number // 字间距
+    rotation: number // 倾斜角度
+  }>
 }
 
 interface PreviewAreaProps {
@@ -356,11 +361,25 @@ const PreviewArea = forwardRef<PreviewAreaRef, PreviewAreaProps>(
 
         document.body.removeChild(measureElement)
 
+        // 伪随机函数，基于索引生成稳定的"随机"值
+        const pseudoRandom = (index: number) => {
+          const x = Math.sin(index * 12.9898) * 43758.5453
+          return x - Math.floor(x)
+        }
+
+        // 为每一行添加随机参数
+        const linesWithRandomParams = allLines.map((text, index) => ({
+          text,
+          lineHeightOffset: (pseudoRandom(index) - 0.5) * 4, // ±2px 行间距偏移
+          letterSpacing: (pseudoRandom(index + 1000) - 0.5) * 3, // ±1.5px 字间距
+          rotation: (pseudoRandom(index + 2000) - 0.5) * 0.8, // ±0.4° 倾斜角度
+        }))
+
         // Split into pages
         const newPages: PageContent[] = []
-        for (let i = 0; i < allLines.length; i += LINES_PER_PAGE) {
+        for (let i = 0; i < linesWithRandomParams.length; i += LINES_PER_PAGE) {
           newPages.push({
-            lines: allLines.slice(i, i + LINES_PER_PAGE),
+            lines: linesWithRandomParams.slice(i, i + LINES_PER_PAGE),
           })
         }
 
@@ -376,7 +395,13 @@ const PreviewArea = forwardRef<PreviewAreaRef, PreviewAreaProps>(
         {(() => {
           const config = createPageConfig(fontSize, margins)
           return pages.map((page, pageIndex) => (
-            <div key={pageIndex} className="a4-page">
+            <div
+              key={pageIndex}
+              className="a4-page"
+              style={{
+                background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.04) 3px, rgba(0, 0, 0, 0.04) 4px), repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0, 0, 0, 0.035) 3px, rgba(0, 0, 0, 0.035) 4px), #fffcf5',
+              }}
+            >
               <svg className="paper-lines" width="100%" height="100%" style={{ zIndex: 1 }}>
                 <defs>
                   {/* Paper texture with fiber effect */}
@@ -394,29 +419,47 @@ const PreviewArea = forwardRef<PreviewAreaRef, PreviewAreaProps>(
                     <rect x="0" y="0" width="100" height="100" fill="url(#fibers)"/>
                   </pattern>
 
-                  {/* Fiber pattern - repeated tiny irregular marks */}
+                  {/* Fiber pattern - enhanced visibility */}
                   <pattern
                     id="fibers"
                     x="0"
                     y="0"
-                    width="20"
-                    height="20"
+                    width="25"
+                    height="25"
                     patternUnits="userSpaceOnUse"
                   >
-                    {/* Random fiber marks */}
-                    <rect x="2" y="3" width="3" height="0.3" fill="rgba(0,0,0,0.02)"/>
-                    <rect x="8" y="7" width="4" height="0.2" fill="rgba(0,0,0,0.015)"/>
-                    <rect x="15" y="2" width="2" height="0.4" fill="rgba(0,0,0,0.018)"/>
-                    <rect x="1" y="12" width="5" height="0.2" fill="rgba(0,0,0,0.012)"/>
-                    <rect x="10" y="15" width="3" height="0.3" fill="rgba(0,0,0,0.02)"/>
-                    <rect x="17" y="18" width="2" height="0.2" fill="rgba(0,0,0,0.015)"/>
-                    <rect x="5" y="17" width="4" height="0.3" fill="rgba(0,0,0,0.018)"/>
-                    <rect x="12" y="9" width="2" height="0.2" fill="rgba(0,0,0,0.012)"/>
-                    {/* Dots for grain */}
-                    <circle cx="6" cy="6" r="0.5" fill="rgba(0,0,0,0.01)"/>
-                    <circle cx="14" cy="11" r="0.4" fill="rgba(0,0,0,0.012)"/>
-                    <circle cx="3" cy="16" r="0.6" fill="rgba(0,0,0,0.008)"/>
-                    <circle cx="18" cy="5" r="0.5" fill="rgba(0,0,0,0.01)"/>
+                    {/* Random fiber marks - much more visible */}
+                    <rect x="2" y="3" width="3" height="0.3" fill="rgba(0,0,0,0.08)"/>
+                    <rect x="8" y="7" width="4" height="0.2" fill="rgba(0,0,0,0.06)"/>
+                    <rect x="15" y="2" width="2" height="0.4" fill="rgba(0,0,0,0.07)"/>
+                    <rect x="1" y="12" width="5" height="0.2" fill="rgba(0,0,0,0.05)"/>
+                    <rect x="10" y="15" width="3" height="0.3" fill="rgba(0,0,0,0.08)"/>
+                    <rect x="17" y="18" width="2" height="0.2" fill="rgba(0,0,0,0.06)"/>
+                    <rect x="5" y="17" width="4" height="0.3" fill="rgba(0,0,0,0.07)"/>
+                    <rect x="12" y="9" width="2" height="0.2" fill="rgba(0,0,0,0.05)"/>
+                    <rect x="19" y="12" width="3" height="0.25" fill="rgba(0,0,0,0.06)"/>
+                    <rect x="4" y="21" width="4" height="0.2" fill="rgba(0,0,0,0.055)"/>
+                    <rect x="13" y="4" width="2" height="0.35" fill="rgba(0,0,0,0.075)"/>
+                    <rect x="21" y="22" width="3" height="0.2" fill="rgba(0,0,0,0.065)"/>
+                    <rect x="0" y="8" width="2" height="0.25" fill="rgba(0,0,0,0.07)"/>
+                    <rect x="6" y="19" width="3" height="0.3" fill="rgba(0,0,0,0.058)"/>
+                    <rect x="16" y="14" width="2" height="0.2" fill="rgba(0,0,0,0.068)"/>
+                    {/* Dots for grain - more visible */}
+                    <circle cx="6" cy="6" r="0.5" fill="rgba(0,0,0,0.04)"/>
+                    <circle cx="14" cy="11" r="0.4" fill="rgba(0,0,0,0.05)"/>
+                    <circle cx="3" cy="16" r="0.6" fill="rgba(0,0,0,0.035)"/>
+                    <circle cx="18" cy="5" r="0.5" fill="rgba(0,0,0,0.045)"/>
+                    <circle cx="9" cy="20" r="0.45" fill="rgba(0,0,0,0.042)"/>
+                    <circle cx="22" cy="15" r="0.55" fill="rgba(0,0,0,0.038)"/>
+                    <circle cx="11" cy="2" r="0.4" fill="rgba(0,0,0,0.048)"/>
+                    <circle cx="2" cy="23" r="0.5" fill="rgba(0,0,0,0.041)"/>
+                    <circle cx="20" cy="0" r="0.45" fill="rgba(0,0,0,0.044)"/>
+                    {/* Irregular aging spots - more visible */}
+                    <circle cx="7" cy="13" r="1.2" fill="rgba(139,90,43,0.03)"/>
+                    <circle cx="20" cy="8" r="0.8" fill="rgba(139,90,43,0.025)"/>
+                    <circle cx="15" cy="22" r="1" fill="rgba(139,90,43,0.028)"/>
+                    <circle cx="1" cy="4" r="0.9" fill="rgba(139,90,43,0.022)"/>
+                    <circle cx="23" cy="19" r="1.1" fill="rgba(139,90,43,0.026)"/>
                   </pattern>
 
                   {/* Traditional Chinese double red line pattern */}
@@ -495,6 +538,8 @@ const PreviewArea = forwardRef<PreviewAreaRef, PreviewAreaProps>(
                 style={{
                   fontFamily: `"${font.name}", "KaiTi", "楷体", serif`,
                   fontSize: `${config.fontSize}px`,
+                  color: '#2c2c2c', // 深灰色，接近钢笔墨色
+                  filter: 'blur(0.3px)', // 轻微模糊，模拟墨水晕染
                   height: `${config.writableHeight}px`,
                   marginTop: `${config.marginTop}px`,
                   position: 'absolute',
@@ -507,7 +552,9 @@ const PreviewArea = forwardRef<PreviewAreaRef, PreviewAreaProps>(
                   // Text should start from first double line (lineIndex 1), not top thick border (lineIndex 0)
                   const textLineIndex = lineIndex + 1
 
-                  const textY = config.getTextY(textLineIndex) - config.marginTop
+                  const baseTextY = config.getTextY(textLineIndex) - config.marginTop
+                  // 应用行间距随机偏移
+                  const textY = baseTextY + line.lineHeightOffset
 
                   return (
                     <div
@@ -520,9 +567,12 @@ const PreviewArea = forwardRef<PreviewAreaRef, PreviewAreaProps>(
                         height: `${config.lineHeight}px`,
                         display: 'flex',
                         alignItems: 'flex-end',
+                        letterSpacing: `${line.letterSpacing}px`, // 字间距
+                        transform: `rotate(${line.rotation}deg)`, // 倾斜角度
+                        transformOrigin: 'left bottom',
                       }}
                     >
-                      {line}
+                      {line.text}
                     </div>
                   )
                 })}
