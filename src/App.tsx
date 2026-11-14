@@ -75,7 +75,7 @@ function App() {
 
   const handleExportPDF = async () => {
     const { jsPDF } = await import('jspdf')
-    const html2canvas = (await import('html2canvas')).default
+    const { renderPageToCanvas } = await import('./renderPageToCanvas')
 
     if (!previewRef.current) return
 
@@ -88,13 +88,7 @@ function App() {
 
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i] as HTMLElement
-      const canvas = await html2canvas(page, {
-        scale: 3.125, // 300 DPI (96 DPI * 3.125)
-        useCORS: true,
-        logging: false,
-        backgroundColor: null,
-        allowTaint: true,
-      })
+      const canvas = await renderPageToCanvas(page, selectedFont)
 
       const imgData = canvas.toDataURL('image/png')
       const imgWidth = 210
@@ -114,7 +108,7 @@ function App() {
   }
 
   const handleExportImage = async () => {
-    const html2canvas = (await import('html2canvas')).default
+    const { renderPageToCanvas } = await import('./renderPageToCanvas')
 
     if (!previewRef.current) return
 
@@ -122,13 +116,7 @@ function App() {
 
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i] as HTMLElement
-      const canvas = await html2canvas(page, {
-        scale: 3.125, // 300 DPI (96 DPI * 3.125)
-        useCORS: true,
-        logging: false,
-        backgroundColor: null,
-        allowTaint: true,
-      })
+      const canvas = await renderPageToCanvas(page, selectedFont)
 
       // Browser download
       canvas.toBlob((blob) => {
