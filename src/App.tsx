@@ -188,6 +188,7 @@ function App() {
           ref={previewRef}
           text={text}
           font={selectedFont}
+          isFontLoaded={loadedFonts.has(selectedFont.file)}
           fontSize={fontSize}
           margins={marginPreset}
           onPageCountChange={setPageCount}
