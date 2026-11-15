@@ -84,7 +84,7 @@ const PaperLines = ({ layout, pageIndex }: PaperLinesProps) => {
         </pattern>
       </defs>
 
-      <rect x="0" y="0" width="100%" height="100%" fill={`url(#texture-${pageIndex})`} />
+      <rect className="paper-texture" x="0" y="0" width="100%" height="100%" fill={`url(#texture-${pageIndex})`} />
 
       {/* 双红线区域，不含首尾两条粗线 */}
       <rect

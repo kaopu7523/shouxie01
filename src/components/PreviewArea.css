@@ -76,6 +76,12 @@
     box-shadow: none;
     margin: 0;
     page-break-after: always;
+    /* 直接打印到白纸上不要纸张底色；!important 用来盖过行内样式 */
+    background: #fff !important;
+  }
+
+  .paper-texture {
+    display: none;
   }
 
   .preview-area {
